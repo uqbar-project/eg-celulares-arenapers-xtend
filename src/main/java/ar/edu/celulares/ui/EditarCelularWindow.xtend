@@ -70,7 +70,9 @@ class EditarCelularWindow extends Dialog<Celular> {
 		new Button(actions) //
 			.setCaption("Cancelar")
 			.onClick [|
-				original.copiarA(this.modelObject)
+				if (!original.isNew) {
+					original.copiarA(this.modelObject)
+				}
 				this.cancel
 			]
 	}
