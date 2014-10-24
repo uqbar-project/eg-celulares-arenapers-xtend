@@ -1,4 +1,4 @@
-package ar.edu.celulares.home
+package ar.edu.celulares.repos
 
 import ar.edu.celulares.domain.ModeloCelular
 import java.math.BigDecimal
@@ -7,7 +7,7 @@ import org.uqbar.commons.utils.Observable
 import uqbar.arena.persistence.PersistentHome
 
 @Observable
-class HomeModelos extends PersistentHome<ModeloCelular> {
+class RepoModelos extends PersistentHome<ModeloCelular> {
 
 	new() {
 		this.init

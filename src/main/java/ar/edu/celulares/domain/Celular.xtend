@@ -71,7 +71,7 @@ class Celular extends Entity implements Cloneable {
 	}
 
 	def void setNumero(Integer numero) {
-		if (numero < 10000000) {
+		if (numero != null && numero < 10000000) {
 			throw new UserException("El número de celular es muy corto")
 		}
 		_numero = numero

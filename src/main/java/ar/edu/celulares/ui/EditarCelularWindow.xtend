@@ -2,8 +2,6 @@ package ar.edu.celulares.ui
 
 import ar.edu.celulares.domain.Celular
 import ar.edu.celulares.domain.ModeloCelular
-import ar.edu.celulares.home.HomeCelulares
-import ar.edu.celulares.home.HomeModelos
 import org.uqbar.arena.bindings.ObservableProperty
 import org.uqbar.arena.bindings.PropertyAdapter
 import org.uqbar.arena.layout.ColumnLayout
@@ -16,6 +14,8 @@ import org.uqbar.arena.widgets.TextBox
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.commons.utils.ApplicationContext
+import ar.edu.celulares.repos.RepoCelulares
+import ar.edu.celulares.repos.RepoModelos
 
 class EditarCelularWindow extends Dialog<Celular> {
 
@@ -50,7 +50,7 @@ class EditarCelularWindow extends Dialog<Celular> {
 		new Selector<ModeloCelular>(form) => [
 			allowNull = false
 			bindValueToProperty("modeloCelular")
-			bindItems(new ObservableProperty(homeModelos, "modelos")) => [
+			bindItems(new ObservableProperty(repoModelos, "modelos")) => [
 				it.adapter = new PropertyAdapter(typeof(ModeloCelular), "descripcionEntera")
 			]
 		]
@@ -77,12 +77,12 @@ class EditarCelularWindow extends Dialog<Celular> {
 			]
 	}
 
-	def getHomeCelulares() {
-		ApplicationContext.instance.getSingleton(typeof(Celular)) as HomeCelulares
+	def getRepoCelulares() {
+		ApplicationContext.instance.getSingleton(typeof(Celular)) as RepoCelulares
 	}
 
-	def getHomeModelos() {
-		ApplicationContext.instance.getSingleton(typeof(ModeloCelular)) as HomeModelos
+	def getRepoModelos() {
+		ApplicationContext.instance.getSingleton(typeof(ModeloCelular)) as RepoModelos
 	}
 
 }

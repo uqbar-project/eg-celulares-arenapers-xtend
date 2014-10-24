@@ -60,14 +60,20 @@ class BuscarCelularesWindow extends SimpleWindow<BuscadorCelular> {
 			foreground = Color.BLUE
 		]
 
-		new TextBox(searchFormPanel).bindValueToProperty("numero")
+		new TextBox(searchFormPanel) => [
+			bindValueToProperty("numero")
+			width = 150	
+		]
 
 		new Label(searchFormPanel) => [
 			text = "Nombre del cliente"
 			foreground = Color.BLUE
 		]
 
-		new TextBox(searchFormPanel).bindValueToProperty("nombre")
+		new TextBox(searchFormPanel) => [
+			bindValueToProperty("nombre")
+			width = 250
+		]
 	}
 
 	/**

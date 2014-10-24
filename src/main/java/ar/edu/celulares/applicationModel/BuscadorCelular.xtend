@@ -4,8 +4,8 @@ import java.io.Serializable
 import java.util.List
 import ar.edu.celulares.domain.Celular
 import org.uqbar.commons.utils.ApplicationContext
-import ar.edu.celulares.home.HomeCelulares
 import java.util.ArrayList
+import ar.edu.celulares.repos.RepoCelulares
 
 /**
  * Application model que representa la búsqueda de {@link Celular}.
@@ -39,8 +39,8 @@ class BuscadorCelular implements Serializable {
 		resultados = new ArrayList<Celular>
 
 		// FIN WORKAROUND
-		resultados = getHomeCelulares().search(numero, nombre)
-		// también se puede llamar homeCelulares.search(numero, nombre) 
+		resultados = repoCelulares.search(numero, nombre)
+		// también se puede llamar getRepoCelulares().search(numero, nombre) 
 	}
 
 	def void clear() {
@@ -49,12 +49,12 @@ class BuscadorCelular implements Serializable {
 	}
 
 	def void eliminarCelularSeleccionado() {
-		getHomeCelulares().delete(celularSeleccionado)
-		this.search()
+		repoCelulares.delete(celularSeleccionado)
+		this.search
 		celularSeleccionado = null
 	}
 
-	def HomeCelulares getHomeCelulares() {
+	def RepoCelulares getRepoCelulares() {
 		ApplicationContext.instance.getSingleton(typeof(Celular))
 	}
 

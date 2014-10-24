@@ -10,7 +10,7 @@ class CrearCelularWindow extends EditarCelularWindow {
 	}
 
 	override executeTask() {
-		homeCelulares.create(modelObject)
+		repoCelulares.create(modelObject)
 		super.executeTask()
 	}
 
