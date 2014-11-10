@@ -111,7 +111,7 @@ class BuscarCelularesWindow extends SimpleWindow<BuscadorCelular> {
 	 */
 	def protected createResultsGrid(Panel mainPanel) {
 		var table = new Table<Celular>(mainPanel, typeof(Celular))
-		table.height = 200
+		table.heigth = 200
 		table.width = 450
 		table.bindItemsToProperty("resultados")
 		table.bindValueToProperty("celularSeleccionado")
