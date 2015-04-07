@@ -1,11 +1,13 @@
 package ar.edu.celulares.applicationModel
 
-import java.io.Serializable
-import java.util.List
 import ar.edu.celulares.domain.Celular
-import org.uqbar.commons.utils.ApplicationContext
-import java.util.ArrayList
 import ar.edu.celulares.repos.RepoCelulares
+import java.io.Serializable
+import java.util.ArrayList
+import java.util.List
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.uqbar.commons.utils.ApplicationContext
+import org.uqbar.commons.utils.Observable
 
 /**
  * Application model que representa la búsqueda de {@link Celular}.
@@ -23,13 +25,14 @@ import ar.edu.celulares.repos.RepoCelulares
  *
  * @author npasserini
  */
-@org.uqbar.commons.utils.Observable
+@Observable
+@Accessors
 class BuscadorCelular implements Serializable {
 
-	@Property Integer numero
-	@Property String nombre
-	@Property List<Celular> resultados
-	@Property Celular celularSeleccionado
+	Integer numero
+	String nombre
+	List<Celular> resultados
+	Celular celularSeleccionado
 
 	// ********************************************************
 	// ** Acciones

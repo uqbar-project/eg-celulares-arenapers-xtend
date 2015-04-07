@@ -1,5 +1,6 @@
 package ar.edu.celulares.domain
 
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.commons.model.Entity
 import org.uqbar.commons.model.ObservableUtils
 import org.uqbar.commons.model.UserException
@@ -10,27 +11,28 @@ import uqbar.arena.persistence.annotations.Relation
 
 @TransactionalAndObservable
 @PersistentClass
+@Accessors
 class Celular extends Entity implements Cloneable {
 	final int MAX_NUMERO = 1000
 
-	@Property Integer numero
-	@Property String nombre
-	@Property ModeloCelular modeloCelular
-	@Property Boolean recibeResumenCuenta
+	Integer numero
+	String nombre
+	ModeloCelular modeloCelular
+	Boolean recibeResumenCuenta
 
 	new() {
 	}
 
 	new(String unNombre, Integer unNumero) {
-		_nombre = unNombre
-		_numero = unNumero
+		nombre = unNombre
+		numero = unNumero
 	}
 
 	new(String unNombre, Integer unNumero, ModeloCelular unModeloCelular, boolean siRecibeResumenCuenta) {
-		_nombre = unNombre
-		_numero = unNumero
-		_modeloCelular = unModeloCelular
-		_recibeResumenCuenta = siRecibeResumenCuenta
+		nombre = unNombre
+		numero = unNumero
+		modeloCelular = unModeloCelular
+		recibeResumenCuenta = siRecibeResumenCuenta
 	}
 
 	// ********************************************************
@@ -67,40 +69,40 @@ class Celular extends Entity implements Cloneable {
 	// ********************************************************
 	@PersistentField
 	def getNumero() {
-		_numero
+		numero
 	}
 
-	def void setNumero(Integer numero) {
-		if (numero != null && numero < 10000000) {
+	def void setNumero(Integer unNumero) {
+		if (unNumero != null && unNumero < 10000000) {
 			throw new UserException("El número de celular es muy corto")
 		}
-		_numero = numero
+		numero = unNumero
 	}
 
 	@PersistentField
 	def getNombre() {
-		_nombre
+		nombre
 	}
 
 	@Relation
 	def ModeloCelular getModeloCelular() {
-		_modeloCelular
+		modeloCelular
 	}
 
-	def void setModeloCelular(ModeloCelular modeloCelular) {
-		_modeloCelular = modeloCelular
+	def void setModeloCelular(ModeloCelular unModeloCelular) {
+		modeloCelular = unModeloCelular
 		this.setRecibeResumenCuenta(modeloCelular.getRequiereResumenCuenta())
 	}
 
 	def void setRecibeResumenCuenta(Boolean siRecibeResumenCuenta) {
-		_recibeResumenCuenta = siRecibeResumenCuenta
+		recibeResumenCuenta = siRecibeResumenCuenta
 		if (modeloCelular != null)
 			ObservableUtils.firePropertyChanged(this, "habilitaResumenCuenta", !habilitaResumenCuenta)
 	}
 
 	@PersistentField
 	def getRecibeResumenCuenta() {
-		_recibeResumenCuenta
+		recibeResumenCuenta
 	}
 
 	def getHabilitaResumenCuenta() {

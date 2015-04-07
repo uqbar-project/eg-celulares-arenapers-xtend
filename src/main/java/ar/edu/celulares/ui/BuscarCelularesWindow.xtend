@@ -110,13 +110,13 @@ class BuscarCelularesWindow extends SimpleWindow<BuscadorCelular> {
 	 * dispara la notificación a la grilla que funciona como Observer
 	 */
 	def protected createResultsGrid(Panel mainPanel) {
-		var table = new Table<Celular>(mainPanel, typeof(Celular))
-		table.heigth = 200
-		table.width = 450
-		table.bindItemsToProperty("resultados")
-		table.bindValueToProperty("celularSeleccionado")
+		var table = new Table<Celular>(mainPanel, typeof(Celular)) => [
+			height = 200
+			width = 450
+			bindItemsToProperty("resultados")
+			bindValueToProperty("celularSeleccionado")
+		]
 		this.describeResultsGrid(table)
-
 	}
 
 	/**
