@@ -12,9 +12,9 @@ import uqbar.arena.persistence.annotations.PersistentField
 @Accessors
 class ModeloCelular extends Entity {
 	
-	String descripcion
-	BigDecimal costo
-	Boolean requiereResumenCuenta  // FED: boolean tiene problemas
+	@PersistentField String descripcion
+	@PersistentField BigDecimal costo
+	@PersistentField Boolean requiereResumenCuenta  // FED: boolean tiene problemas
 	
 	new(){
 	}
@@ -29,27 +29,12 @@ class ModeloCelular extends Entity {
 		requiereResumenCuenta = siRequiereResumenCuenta
 	}
 
-	@PersistentField
-	def getDescripcion() {
-		descripcion
-	}
-	
 	def String getDescripcionEntera() {
 		descripcion + " ($ " + costo + ")"
 	}
 	
-	@PersistentField
-	def getCosto() {
-		costo
-	}
-	
-	@PersistentField
-	def getRequiereResumenCuenta() {
-		requiereResumenCuenta
-	}
-
 	override toString() {
 		return descripcionEntera
 	}
-	
+
 }

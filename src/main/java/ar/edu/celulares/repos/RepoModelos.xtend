@@ -1,7 +1,6 @@
 package ar.edu.celulares.repos
 
 import ar.edu.celulares.domain.ModeloCelular
-import java.math.BigDecimal
 import java.util.List
 import org.uqbar.commons.utils.Observable
 import uqbar.arena.persistence.PersistentHome
@@ -25,11 +24,7 @@ class RepoModelos extends PersistentHome<ModeloCelular> {
 		if (this.get(unaDescripcion) != null) {
 			return
 		}
-		var modelo = new ModeloCelular => [
-			descripcion = unaDescripcion
-			costo = new BigDecimal(unCosto)
-			requiereResumenCuenta = siRequiereResumenCuenta
-		]
+		var modelo = new ModeloCelular(unaDescripcion, unCosto, siRequiereResumenCuenta)
 		this.create(modelo)
 	}
 
@@ -46,7 +41,7 @@ class RepoModelos extends PersistentHome<ModeloCelular> {
 	}
 
 	override def createExample() {
-		new ModeloCelular()
+		new ModeloCelular
 	}
 
 }

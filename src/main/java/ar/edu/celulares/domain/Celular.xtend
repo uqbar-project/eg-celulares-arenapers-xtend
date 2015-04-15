@@ -13,13 +13,14 @@ import uqbar.arena.persistence.annotations.Relation
 @PersistentClass
 @Accessors
 class Celular extends Entity implements Cloneable {
+
+	@PersistentField Integer numero
+	@PersistentField String nombre
+	@Relation ModeloCelular modeloCelular
+	@PersistentField Boolean recibeResumenCuenta
+
 	final int MAX_NUMERO = 1000
-
-	Integer numero
-	String nombre
-	ModeloCelular modeloCelular
-	Boolean recibeResumenCuenta
-
+	
 	new() {
 	}
 
@@ -67,26 +68,11 @@ class Celular extends Entity implements Cloneable {
 	// ********************************************************
 	// ** Getters y setters
 	// ********************************************************
-	@PersistentField
-	def getNumero() {
-		numero
-	}
-
 	def void setNumero(Integer unNumero) {
 		if (unNumero != null && unNumero < 10000000) {
 			throw new UserException("El número de celular es muy corto")
 		}
 		numero = unNumero
-	}
-
-	@PersistentField
-	def getNombre() {
-		nombre
-	}
-
-	@Relation
-	def ModeloCelular getModeloCelular() {
-		modeloCelular
 	}
 
 	def void setModeloCelular(ModeloCelular unModeloCelular) {
@@ -98,11 +84,6 @@ class Celular extends Entity implements Cloneable {
 		recibeResumenCuenta = siRecibeResumenCuenta
 		if (modeloCelular != null)
 			ObservableUtils.firePropertyChanged(this, "habilitaResumenCuenta", !habilitaResumenCuenta)
-	}
-
-	@PersistentField
-	def getRecibeResumenCuenta() {
-		recibeResumenCuenta
 	}
 
 	def getHabilitaResumenCuenta() {
