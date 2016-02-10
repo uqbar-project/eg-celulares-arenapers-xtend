@@ -1,14 +1,14 @@
-package ar.edu.celulares.repos
+package ar.edu.celularesPers.repos
 
-import ar.edu.celulares.domain.Celular
-import ar.edu.celulares.domain.ModeloCelular
+import ar.edu.celularesPers.domain.Celular
+import ar.edu.celularesPers.domain.ModeloCelular
 import org.uqbar.commons.model.UserException
 import org.uqbar.commons.utils.ApplicationContext
 import org.uqbar.commons.utils.Observable
-import uqbar.arena.persistence.PersistentHome
+import uqbar.arena.persistence.PersistentRepo
 
 @Observable
-class RepoCelulares extends PersistentHome<Celular> {
+class RepoCelulares extends PersistentRepo<Celular> {
 
 	override def getEntityType() {
 		typeof(Celular)
@@ -22,15 +22,6 @@ class RepoCelulares extends PersistentHome<Celular> {
 	// ** Inicialización fixture
 	// ********************************************************
 	new() {
-		this.init
-	}
-
-	def void init() {
-		this.createIfNotExists("Laura Iturbe", 88022202, getModelo("NOKIA LUMIA 625"), false)
-		this.createIfNotExists("Julieta Passerini", 45636453, getModelo("NOKIA ASHA 501"), false)
-		this.createIfNotExists("Debora Fortini", 45610892, getModelo("NOKIA ASHA 501"), true)
-		this.createIfNotExists("Chiara Dodino", 68026976, getModelo("NOKIA ASHA 501"), false)
-		this.createIfNotExists("Melina Dodino", 40989911, getModelo("LG OPTIMUS L3 II"), true)
 	}
 
 	def getModelo(String modeloDescripcion) {
@@ -55,15 +46,17 @@ class RepoCelulares extends PersistentHome<Celular> {
 
 	def createIfNotExists(Celular celular) {
 		var celularDB = this.get(celular.numero)
+		println("Numero " + celular.numero + " de " + celular.nombre + " es nuevo? " + (celularDB == null))
 		if (celularDB == null) {
+			println("   Creo")
 			this.create(celular)
 			celularDB = celular
 		}
+		println("..... " + this.allInstances)
 		celularDB
 	}
 
-	def void createIfNotExists(String pNombre, Integer pNumero, ModeloCelular pModeloCelular,
-		Boolean pRecibeResumenCuenta) {
+	def void createIfNotExists(String pNombre, Integer pNumero, ModeloCelular pModeloCelular,Boolean pRecibeResumenCuenta) {
 		var celular = new Celular => [
 			nombre = pNombre
 			numero = pNumero
@@ -103,26 +96,32 @@ class RepoCelulares extends PersistentHome<Celular> {
 	 * a memoria todo el grafo de celulares (con una cantidad enorme de celulares puede traer problemas de performance)
 	 * En ese caso el celular (12345, "Juan Gonzalez") será contemplado por la búsqueda (23, "Gonza")
 	 * 
-	 * Actualmente la búsqueda se hace by example pero requiere que sea exactamente ese número o ese nombre
+	 * Actualmente la búsqueda
+	 * se hace en memoria, ya que by example 
+	 * 1) requiere que sea exactamente ese número o ese nombre
+	 * 2) a veces no funciona correctamente
 	 * 
 	 */
 	def search(Integer unNumero, String unNombre) {
-
-		//allInstances.filter[celular|this.match(numero, celular.numero) && this.match(nombre, celular.nombre)].toList
-		searchByExample(
-			new Celular => [
-				numero = unNumero
-				nombre = unNombre
-			])
+		allInstances.filter[celular|this.match(unNumero, celular.numero) && this.match(unNombre, celular.nombre)].toList
+//		searchByExample(
+//			new Celular => [
+//				if (unNumero != null && unNumero > 0) {
+//					numero = unNumero
+//				}
+//				if (nombre != null && !nombre.equals("")) {
+//					nombre = unNombre
+//				}
+//			])
 	}
 
-//	def match(Object expectedValue, Object realValue) {
-//		if (expectedValue == null) {
-//			return true
-//		}
-//		if (realValue == null) {
-//			return false
-//		}
-//		realValue.toString().toLowerCase().contains(expectedValue.toString().toLowerCase())
-//	}
+	def match(Object expectedValue, Object realValue) {
+		if (expectedValue == null) {
+			return true
+		}
+		if (realValue == null) {
+			return false
+		}
+		realValue.toString().toLowerCase().contains(expectedValue.toString().toLowerCase())
+	}
 }

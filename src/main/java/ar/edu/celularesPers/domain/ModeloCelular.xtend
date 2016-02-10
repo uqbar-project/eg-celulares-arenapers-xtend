@@ -1,4 +1,4 @@
-package ar.edu.celulares.domain
+package ar.edu.celularesPers.domain
 
 import java.math.BigDecimal
 import org.eclipse.xtend.lib.annotations.Accessors

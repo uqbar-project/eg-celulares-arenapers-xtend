@@ -1,13 +1,14 @@
-package ar.edu.celulares.ui
+package ar.edu.celularesPers.ui
 
-import ar.edu.celulares.applicationModel.BuscadorCelular
-import ar.edu.celulares.domain.Celular
+import ar.edu.celularesPers.applicationModel.BuscadorCelular
+import ar.edu.celularesPers.domain.Celular
 import java.awt.Color
 import org.uqbar.arena.bindings.NotNullObservable
 import org.uqbar.arena.layout.ColumnLayout
 import org.uqbar.arena.layout.HorizontalLayout
 import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.widgets.Label
+import org.uqbar.arena.widgets.NumericField
 import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.widgets.TextBox
 import org.uqbar.arena.widgets.tables.Column
@@ -15,6 +16,8 @@ import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.SimpleWindow
 import org.uqbar.arena.windows.WindowOwner
+
+import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 
 /**
  * Ventana de búsqueda de celulares.
@@ -53,16 +56,20 @@ class BuscarCelularesWindow extends SimpleWindow<BuscadorCelular> {
 	 */
 	override def void createFormPanel(Panel mainPanel) {
 		var searchFormPanel = new Panel(mainPanel)
-		searchFormPanel.setLayout(new ColumnLayout(2))
+		searchFormPanel.layout = new ColumnLayout(2)
 
 		new Label(searchFormPanel) => [
 			text = "Número"
 			foreground = Color.BLUE
 		]
 
-		new TextBox(searchFormPanel) => [
-			bindValueToProperty("numero")
-			width = 150	
+		new NumericField(searchFormPanel) => [
+			// tip: de esta manera se registra el binding
+			// anidado y se disparan notificaciones,
+			// si al searchFormPanel se le asigna como modelo
+			// el objeto example no se disparan 
+			value <=> "numero"
+			width = 200
 		]
 
 		new Label(searchFormPanel) => [
@@ -71,9 +78,10 @@ class BuscarCelularesWindow extends SimpleWindow<BuscadorCelular> {
 		]
 
 		new TextBox(searchFormPanel) => [
-			bindValueToProperty("nombre")
-			width = 250
+			value <=> "nombre"
+			width = 200
 		]
+		
 	}
 
 	/**
@@ -86,19 +94,22 @@ class BuscarCelularesWindow extends SimpleWindow<BuscadorCelular> {
 	 *
 	 */
 	override protected addActions(Panel actionsPanel) {
-		new Button(actionsPanel)
-			.setCaption("Buscar")
-			.onClick [ | modelObject.search ] 
-			.setAsDefault
-			.disableOnError
+		new Button(actionsPanel) => [
+			caption = "Buscar"
+			onClick = [|modelObject.search]
+			setAsDefault
+			disableOnError
+		]
 
-		new Button(actionsPanel) //
-			.setCaption("Limpiar")
-			.onClick [ | modelObject.clear ]
+		new Button(actionsPanel) => [
+			caption = "Limpiar"
+			onClick = [|modelObject.clear]
+		]
 
-		new Button(actionsPanel) //
-			.setCaption("Nuevo Celular")
-			.onClick [ | this.crearCelular ]
+		new Button(actionsPanel) => [
+			caption = "Nuevo Celular"
+			onClick = [|this.crearCelular]
+		]
 	}
 
 	// *************************************************************************
@@ -113,8 +124,8 @@ class BuscarCelularesWindow extends SimpleWindow<BuscadorCelular> {
 		var table = new Table<Celular>(mainPanel, typeof(Celular)) => [
 			height = 200
 			width = 450
-			bindItemsToProperty("resultados")
-			bindValueToProperty("celularSeleccionado")
+			items <=> "resultados"
+			value <=> "celularSeleccionado"
 		]
 		this.describeResultsGrid(table)
 	}
@@ -133,37 +144,41 @@ class BuscarCelularesWindow extends SimpleWindow<BuscadorCelular> {
 			bindContentsToProperty("nombre")
 		]
 
-		new Column<Celular>(table) //
-			.setTitle("Número")
-			.setFixedSize(100)
-			.bindContentsToProperty("numero")
+		new Column<Celular>(table) => [
+			title = "Número"
+			fixedSize = 100
+			bindContentsToProperty("numero")
+		]
 
-		new Column<Celular>(table)
-			.setTitle("Modelo")
-			.setFixedSize(150)
-			.bindContentsToProperty("modeloCelular")
+		new Column<Celular>(table) => [
+			title = "Modelo"
+			fixedSize = 150
+			bindContentsToProperty("modeloCelular")
+		]
 
-		new Column<Celular>(table)
-			.setTitle("Recibe resumen de cuenta")
-			.setFixedSize(50)
-			.bindContentsToTransformer([celular | if (celular.recibeResumenCuenta) "SI" else "NO"])
+		new Column<Celular>(table) => [
+			title = "Recibe resumen de cuenta"
+			fixedSize = 50
+			bindContentsToProperty("recibeResumenCuenta").transformer = ([ Boolean recibeResumenCuenta | if (recibeResumenCuenta) "SI" else "NO"])
+		]
 	}
 
 	def void createGridActions(Panel mainPanel) {
-		var actionsPanel = new Panel(mainPanel)
+		val actionsPanel = new Panel(mainPanel)
 		actionsPanel.setLayout(new HorizontalLayout)
-		var edit = new Button(actionsPanel)
-			.setCaption("Editar")
-			.onClick [ | this.modificarCelular]
+		val elementSelected = new NotNullObservable("celularSeleccionado")
+		
+		new Button(actionsPanel) => [
+			caption = "Editar"
+			onClick [ | this.modificarCelular]
+			bindEnabled(elementSelected)
+		]
 
-		var remove = new Button(actionsPanel)
-			.setCaption("Borrar")
-			.onClick [ | modelObject.eliminarCelularSeleccionado]
- 
-		// Deshabilitar los botones si no hay ningún elemento seleccionado en la grilla.
-		var elementSelected = new NotNullObservable("celularSeleccionado")
-		remove.bindEnabled(elementSelected)
-		edit.bindEnabled(elementSelected)
+		new Button(actionsPanel) => [
+			caption = "Borrar"
+			onClick [ | modelObject.eliminarCelularSeleccionado]
+			bindEnabled(elementSelected)
+		]
 	}
 
 	// ********************************************************

@@ -1,9 +1,8 @@
-package ar.edu.celulares.applicationModel
+package ar.edu.celularesPers.applicationModel
 
-import ar.edu.celulares.domain.Celular
-import ar.edu.celulares.repos.RepoCelulares
+import ar.edu.celularesPers.domain.Celular
+import ar.edu.celularesPers.repos.RepoCelulares
 import java.io.Serializable
-import java.util.ArrayList
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.commons.utils.ApplicationContext
@@ -38,17 +37,18 @@ class BuscadorCelular implements Serializable {
 	// ** Acciones
 	// ********************************************************
 	def void search() { 
-		// WORKAROUND para que refresque la grilla en las actualizaciones
-		resultados = new ArrayList<Celular>
-
-		// FIN WORKAROUND
-		resultados = repoCelulares.search(numero, nombre)
+		if (numero == null && nombre == null) {
+			resultados = repoCelulares.allInstances
+		} else {
+			resultados = repoCelulares.search(numero, nombre)
+		}
 		// también se puede llamar getRepoCelulares().search(numero, nombre) 
 	}
 
 	def void clear() {
 		nombre = null
 		numero = null
+		resultados = newArrayList
 	}
 
 	def void eliminarCelularSeleccionado() {
