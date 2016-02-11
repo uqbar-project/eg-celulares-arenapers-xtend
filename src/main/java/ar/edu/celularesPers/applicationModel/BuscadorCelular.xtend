@@ -37,11 +37,7 @@ class BuscadorCelular implements Serializable {
 	// ** Acciones
 	// ********************************************************
 	def void search() { 
-		if (numero == null && nombre == null) {
-			resultados = repoCelulares.allInstances
-		} else {
-			resultados = repoCelulares.search(numero, nombre)
-		}
+		resultados = repoCelulares.search(numero, nombre)
 		// también se puede llamar getRepoCelulares().search(numero, nombre) 
 	}
 

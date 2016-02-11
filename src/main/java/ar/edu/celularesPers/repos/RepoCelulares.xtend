@@ -107,7 +107,7 @@ class RepoCelulares extends PersistentRepo<Celular> {
 				if (unNumero != null && unNumero > 0) {
 					numero = unNumero
 				}
-				if (nombre != null && !nombre.equals("")) {
+				if (unNombre != null && !unNombre.equals("")) {
 					nombre = unNombre
 				}
 			])
