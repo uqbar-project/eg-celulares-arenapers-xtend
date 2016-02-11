@@ -19,7 +19,7 @@ class Celular extends Entity implements Cloneable {
 	@PersistentField Integer numero
 	@PersistentField String nombre
 	@Relation ModeloCelular modeloCelular
-	@PersistentField Boolean recibeResumenCuenta = false
+	@PersistentField Boolean recibeResumenCuenta // no inicializar
 
 	// ********************************************************
 	// ** Getters y setters
@@ -90,8 +90,15 @@ class Celular extends Entity implements Cloneable {
 		if (numero != null) {
 			result.append(" - " + numero)
 		}
-		result.append(if(recibeResumenCuenta) " - recibe resumen" else " - no recibe resumen")
+		result.append(descripcionRecibeResumen)
 		result.toString
+	}
+	
+	def getDescripcionRecibeResumen() {
+		if (recibeResumenCuenta == null) {
+			return " - no configurado si recibe resumen"
+		}
+		if (recibeResumenCuenta) " - recibe resumen" else " - no recibe resumen"
 	}
 
 	// ********************************************************

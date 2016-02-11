@@ -91,28 +91,29 @@ class RepoCelulares extends PersistentRepo<Celular> {
 	/**
 	 * Busca los celulares que coincidan con los datos recibidos. Tanto número como nombre pueden ser nulos,
 	 * en ese caso no se filtra por ese atributo.
+	 * Para que funcione correctamente el search by example hay que tener cuidado 
+	 * ya que se incluyen en la búsqueda cualquiera de los valores de un objeto example que no sean nulos, esto implica
+	 * 1) ojo con los tipos primitivos boolean, int, float, etc.
+	 * 2) pero además ojo con los valores inicializados por default, tanto en el constructor como en la definición de la clase
+	 * ej: Boolean recibeResumenCuenta = false implica que siempre va a buscar a los clientes que no reciban resumen de cuenta
 	 *
 	 * Para soportar búsquedas por substring hay que descomentar todo el código de abajo, el problema es que trae 
 	 * a memoria todo el grafo de celulares (con una cantidad enorme de celulares puede traer problemas de performance)
 	 * En ese caso el celular (12345, "Juan Gonzalez") será contemplado por la búsqueda (23, "Gonza")
 	 * 
-	 * Actualmente la búsqueda
-	 * se hace en memoria, ya que by example 
-	 * 1) requiere que sea exactamente ese número o ese nombre
-	 * 2) a veces no funciona correctamente
 	 * 
 	 */
 	def search(Integer unNumero, String unNombre) {
-		allInstances.filter[celular|this.match(unNumero, celular.numero) && this.match(unNombre, celular.nombre)].toList
-//		searchByExample(
-//			new Celular => [
-//				if (unNumero != null && unNumero > 0) {
-//					numero = unNumero
-//				}
-//				if (nombre != null && !nombre.equals("")) {
-//					nombre = unNombre
-//				}
-//			])
+//		allInstances.filter[celular|this.match(unNumero, celular.numero) && this.match(unNombre, celular.nombre)].toList
+		searchByExample(
+			new Celular => [
+				if (unNumero != null && unNumero > 0) {
+					numero = unNumero
+				}
+				if (nombre != null && !nombre.equals("")) {
+					nombre = unNombre
+				}
+			])
 	}
 
 	def match(Object expectedValue, Object realValue) {
