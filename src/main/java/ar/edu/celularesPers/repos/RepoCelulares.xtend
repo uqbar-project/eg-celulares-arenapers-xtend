@@ -116,13 +116,14 @@ class RepoCelulares extends PersistentRepo<Celular> {
 			])
 	}
 
-	def match(Object expectedValue, Object realValue) {
-		if (expectedValue == null) {
-			return true
-		}
-		if (realValue == null) {
-			return false
-		}
-		realValue.toString().toLowerCase().contains(expectedValue.toString().toLowerCase())
-	}
+//	def match(Object expectedValue, Object realValue) {
+//		if (expectedValue == null) {
+//			return true
+//		}
+//		if (realValue == null) {
+//			return false
+//		}
+//		realValue.toString().toLowerCase().contains(expectedValue.toString().toLowerCase())
+//	}
+
 }
