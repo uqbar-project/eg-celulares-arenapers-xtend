@@ -46,13 +46,10 @@ class RepoCelulares extends PersistentRepo<Celular> {
 
 	def createIfNotExists(Celular celular) {
 		var celularDB = this.get(celular.numero)
-		println("Numero " + celular.numero + " de " + celular.nombre + " es nuevo? " + (celularDB == null))
 		if (celularDB == null) {
-			println("   Creo")
 			this.create(celular)
 			celularDB = celular
 		}
-		println("..... " + this.allInstances)
 		celularDB
 	}
 
