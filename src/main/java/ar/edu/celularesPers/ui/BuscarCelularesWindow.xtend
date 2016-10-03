@@ -96,19 +96,19 @@ class BuscarCelularesWindow extends SimpleWindow<BuscadorCelular> {
 	override protected addActions(Panel actionsPanel) {
 		new Button(actionsPanel) => [
 			caption = "Buscar"
-			onClick = [|modelObject.search]
+			onClick [|modelObject.search]
 			setAsDefault
 			disableOnError
 		]
 
 		new Button(actionsPanel) => [
 			caption = "Limpiar"
-			onClick = [|modelObject.clear]
+			onClick [|modelObject.clear]
 		]
 
 		new Button(actionsPanel) => [
 			caption = "Nuevo Celular"
-			onClick = [|this.crearCelular]
+			onClick [|this.crearCelular]
 		]
 	}
 
@@ -122,8 +122,7 @@ class BuscarCelularesWindow extends SimpleWindow<BuscadorCelular> {
 	 */
 	def protected createResultsGrid(Panel mainPanel) {
 		var table = new Table<Celular>(mainPanel, typeof(Celular)) => [
-			height = 200
-			width = 450
+			numberVisibleRows = 8
 			items <=> "resultados"
 			value <=> "celularSeleccionado"
 		]
@@ -140,7 +139,7 @@ class BuscarCelularesWindow extends SimpleWindow<BuscadorCelular> {
 	def void describeResultsGrid(Table<Celular> table) {
 		new Column<Celular>(table) => [
 			title = "Nombre"
-			fixedSize = 150
+			fixedSize = 250
 			bindContentsToProperty("nombre")
 		]
 
